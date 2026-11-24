@@ -62,13 +62,13 @@ class TestDebugEndpoint:
 
 class TestSettingsEndpoints:
     def test_get_api_keys(self, client):
-        r = client.get("/api/settings/api-keys")
+        r = client.get("/api/settings/api-keys", headers={"X-Admin-Key": "test-only-admin-key"})
         assert r.status_code == 200
         data = r.json()
         assert isinstance(data, list)
 
     def test_get_news_feeds(self, client):
-        r = client.get("/api/settings/news-feeds")
+        r = client.get("/api/settings/news-feeds", headers={"X-Admin-Key": "test-only-admin-key"})
         assert r.status_code == 200
         data = r.json()
         assert isinstance(data, list)
