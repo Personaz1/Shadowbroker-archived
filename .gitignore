@@ -113,3 +113,15 @@ ROADMAP.md
 UPDATEPROTOCOL.md
 CLAUDE.md
 DOCKER_SECRETS.md
+
+# Local operational data and tracking state
+backend/data/geocode_cache.json
+backend/data/plane_alert_db.json
+backend/data/sat_gp_cache.json
+backend/data/tracked_names.json
+backend/data/yacht_alert_db.json
+backend/out.json
+backend/temp.json
+backend/seattle_sample.json
+backend/sgp_sample.json
+backend/wsdot_sample.json
