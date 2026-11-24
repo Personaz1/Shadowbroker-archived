@@ -73,7 +73,7 @@ docker-compose up -d
 
 Open `http://localhost:3000` to view the dashboard! *(Requires Docker or Podman)*
 
-Before starting, set `ADMIN_KEY` in the root `.env` file to a long random secret. This key is mandatory: the backend refuses to start without it, and the Settings panel requires the same value in its **Admin Key** field for protected operations. Do not commit your `.env` file.
+Before starting, set `ADMIN_KEY` in the root `.env` file to a long random secret (generate one with `openssl rand -hex 32`). This key is mandatory: the backend refuses to start without it, and the Settings panel requires the same value in its **Admin Key** field for protected operations. Do not commit your `.env` file.
 
 `compose.sh` auto-detects `docker compose`, `docker-compose`, `podman compose`, and `podman-compose`.
 If both runtimes are installed, you can force Podman with `./compose.sh --engine podman up -d`.
