@@ -11,12 +11,10 @@ logger = logging.getLogger(__name__)
 
 # Keys grouped by criticality
 _REQUIRED = {
-    # Empty for now — add keys here only if the app literally cannot function without them
+    "ADMIN_KEY": "Admin authentication for API key settings, news-feed configuration, and system updates",
 }
 
-_CRITICAL_WARN = {
-    "ADMIN_KEY": "Authentication for /api/settings and /api/system/update — endpoints are UNPROTECTED without it!",
-}
+_CRITICAL_WARN = {}
 
 _OPTIONAL = {
     "AIS_API_KEY": "AIS vessel streaming (ships layer will be empty without it)",
