@@ -74,6 +74,22 @@ class TestSettingsEndpoints:
         assert isinstance(data, list)
 
 
+class TestAdminAuthentication:
+    def test_api_key_settings_rejects_missing_key(self, client):
+        r = client.get("/api/settings/api-keys")
+        assert r.status_code == 403
+
+    def test_api_key_settings_rejects_invalid_key(self, client):
+        r = client.get("/api/settings/api-keys", headers={"X-Admin-Key": "wrong"})
+        assert r.status_code == 403
+
+    def test_admin_routes_fail_closed_when_key_is_unconfigured(self, client, monkeypatch):
+        import main
+        monkeypatch.setattr(main, "_ADMIN_KEY", "")
+        r = client.get("/api/settings/api-keys", headers={"X-Admin-Key": "test-only-admin-key"})
+        assert r.status_code == 503
+
+
 class TestRadioEndpoints:
     def test_radio_top_returns_200(self, client):
         r = client.get("/api/radio/top")
