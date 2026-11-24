@@ -1,0 +1,3 @@
+# Agent instructions
+
+Archived OSINT/geospatial dashboard. Treat location, tracking, vessel, aircraft, CCTV and named-entity data as potentially sensitive. Do not add covert surveillance, private-person tracking, unauthorized interception or sensitive-location exposure. Use public, licensed, minimized or synthetic data only. Preserve source provenance and retention rules. No live collection or external API access without explicit scope and approval.
