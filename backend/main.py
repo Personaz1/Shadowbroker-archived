@@ -50,6 +50,7 @@ from slowapi.errors import RateLimitExceeded
 from services.schemas import HealthResponse, RefreshResponse
 import uvicorn
 import hashlib
+import hmac
 import json as json_mod
 import socket
 import threading
@@ -57,20 +58,16 @@ import threading
 limiter = Limiter(key_func=get_remote_address)
 
 # ---------------------------------------------------------------------------
-# Admin authentication — protects settings & system endpoints
-# Set ADMIN_KEY in .env or Docker secrets. If unset, endpoints remain open
-# for local-dev convenience but will log a startup warning.
+# Admin authentication — protects settings & system endpoints.
+# ADMIN_KEY is mandatory at startup; protected endpoints fail closed.
 # ---------------------------------------------------------------------------
 _ADMIN_KEY = os.environ.get("ADMIN_KEY", "")
-if not _ADMIN_KEY:
-    logger.warning("ADMIN_KEY is not set — sensitive endpoints are UNPROTECTED. "
-                   "Set ADMIN_KEY in .env or Docker secrets for production.")
-
 def require_admin(request: Request):
     """FastAPI dependency that rejects requests without a valid X-Admin-Key header."""
     if not _ADMIN_KEY:
-        return  # No key configured — allow all (local dev)
-    if request.headers.get("X-Admin-Key") != _ADMIN_KEY:
+        raise HTTPException(status_code=503, detail="Admin authentication is not configured")
+    supplied = request.headers.get("X-Admin-Key", "")
+    if not supplied or not hmac.compare_digest(supplied, _ADMIN_KEY):
         raise HTTPException(status_code=403, detail="Forbidden — invalid or missing admin key")
 
 
@@ -464,7 +461,7 @@ async def api_update_key(request: Request, body: ApiKeyUpdate):
 # ---------------------------------------------------------------------------
 from services.news_feed_config import get_feeds, save_feeds, reset_feeds
 
-@app.get("/api/settings/news-feeds")
+@app.get("/api/settings/news-feeds", dependencies=[Depends(require_admin)])
 @limiter.limit("30/minute")
 async def api_get_news_feeds(request: Request):
     return get_feeds()
