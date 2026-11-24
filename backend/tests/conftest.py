@@ -3,8 +3,9 @@ from unittest.mock import patch, MagicMock
 
 
 @pytest.fixture(autouse=True)
-def _suppress_background_services():
-    """Prevent real scheduler/stream/tracker from starting during tests."""
+def _suppress_background_services(monkeypatch):
+    """Prevent real services from starting and configure a test-only admin key."""
+    monkeypatch.setenv("ADMIN_KEY", "test-only-admin-key")
     with patch("services.data_fetcher.start_scheduler"), \
          patch("services.data_fetcher.stop_scheduler"), \
          patch("services.ais_stream.start_ais_stream"), \
