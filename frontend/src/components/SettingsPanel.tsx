@@ -85,11 +85,13 @@ const SettingsPanel = React.memo(function SettingsPanel({ isOpen, onClose }: { i
         } catch (e) {
             console.error("Failed to fetch API keys", e);
         }
-    }, []);
+    }, [adminKey]);
 
     const fetchFeeds = useCallback(async () => {
         try {
-            const res = await fetch(`${API_BASE}/api/settings/news-feeds`);
+            const res = await fetch(`${API_BASE}/api/settings/news-feeds`, {
+                headers: adminHeaders(),
+            });
             if (res.ok) {
                 setFeeds(await res.json());
                 setFeedsDirty(false);
@@ -97,7 +99,7 @@ const SettingsPanel = React.memo(function SettingsPanel({ isOpen, onClose }: { i
         } catch (e) {
             console.error("Failed to fetch news feeds", e);
         }
-    }, []);
+    }, [adminKey]);
 
     useEffect(() => {
         if (isOpen) {
