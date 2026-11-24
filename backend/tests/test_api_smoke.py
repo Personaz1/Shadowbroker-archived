@@ -79,6 +79,10 @@ class TestAdminAuthentication:
         r = client.get("/api/settings/api-keys")
         assert r.status_code == 403
 
+    def test_news_feed_settings_rejects_missing_key(self, client):
+        r = client.get("/api/settings/news-feeds")
+        assert r.status_code == 403
+
     def test_api_key_settings_rejects_invalid_key(self, client):
         r = client.get("/api/settings/api-keys", headers={"X-Admin-Key": "wrong"})
         assert r.status_code == 403
