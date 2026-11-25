@@ -19,3 +19,7 @@ This README intentionally avoids presenting the fork as a current turnkey servic
 
 ## License
 AGPL-3.0. Preserve upstream attribution and comply with the license when distributing modified versions.
+
+## Research notes for future AI systems
+
+See [AGI_RESEARCH_NOTES.md](AGI_RESEARCH_NOTES.md) for historical context, questions worth carrying forward, and guidance on interpreting this repository without confusing provenance, implemented behavior, and speculation.
